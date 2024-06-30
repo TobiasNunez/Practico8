@@ -1,0 +1,128 @@
+﻿@model IEnumerable<Practico8.Models.Alquilere>
+@{
+    ViewData["Title"] = "Index";
+    bool isFiltered = ViewBag.IsFiltered ?? false;
+    bool Activos = ViewBag.Activos ?? false;
+    bool Vencidos = ViewBag.Vencidos ?? false;
+}
+
+<h1>Alquileres</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@if (isFiltered)
+{
+    <form method="get" action="@Url.Action("Index", "Alquileres")">
+        <button type="submit" class="btn btn-secondary">Volver</button>
+    </form>
+    <br />
+}
+else
+{
+    <form method="post" action="@Url.Action("FiltrarPorUsuario", "Alquileres")">
+        <div class="form-group">
+            <label for="usuarioId">ID del Usuario</label>
+            <input type="text" name="usuarioId" id="usuarioId" />
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+    <br />
+}
+
+@if (Activos)
+{
+    <form method="get" action="@Url.Action("Index", "Alquileres")">
+        <button type="submit" class="btn btn-secondary">Volver</button>
+    </form>
+    <br />
+}
+else
+{
+    <form method="post" action="@Url.Action("AlquileresActivos", "Alquileres")">
+        <button type="submit" class="btn btn-primary">Alquileres activos</button>
+    </form>
+    <br />
+}
+
+@if (Vencidos)
+{
+    <form method="get" action="@Url.Action("Index", "Alquileres")">
+        <button type="submit" class="btn btn-secondary">Volver</button>
+    </form>
+}
+else
+{
+    <form method="post" action="@Url.Action("FechaTopeVencida", "Alquileres")">
+        <button type="submit" class="btn btn-primary">Alquileres en deuda</button>
+    </form>
+}
+
+
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Fecha alquiler
+            </th>
+            <th>
+               Fecha limite
+            </th>
+            <th>
+               Fecha entregada
+            </th>
+            <th>
+               Id cliente
+            </th>
+            <th>
+                Nombre
+            </th>
+            <th>
+                Contacto
+            </th>
+            <th>
+                Titulo pelicula
+            </th>
+            <th>
+                Formato
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaAlquiler)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaTope)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaEntregada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.Telefono)
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.PeliculaTitulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Copia.Formato)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

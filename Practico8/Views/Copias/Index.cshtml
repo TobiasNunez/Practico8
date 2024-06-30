@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Practico8.Models.Copia>
+
+@{
+    ViewData["Title"] = "Index";
+    bool isFiltered = ViewBag.IsFiltered ?? false; 
+}
+
+<h1>Copias</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@if (isFiltered)
+{
+    <form method="get" action="@Url.Action("Index", "Copias")">
+        <button type="submit" class="btn btn-secondary">Volver</button>
+    </form>
+}
+else
+{
+    <form method="post" action="@Url.Action("IndexCopiasDisponibles", "Copias")">
+        <button type="submit" class="btn btn-primary">Mostrar Copias Disponibles</button>
+    </form>
+}
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Id)</th>
+                <th>@Html.DisplayNameFor(model => model.Deteriorada)</th>
+                <th>@Html.DisplayNameFor(model => model.Formato)</th>
+                <th>@Html.DisplayNameFor(model => model.PrecioAlquiler)</th>
+                <th>@Html.DisplayNameFor(model => model.Pelicula)</th>
+                <th>Titulo</th>
+                <th>Año</th>
+                <th>Calificación</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Deteriorada)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Formato)</td>
+                    <td>$@Html.DisplayFor(modelItem => item.PrecioAlquiler)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Pelicula.Id)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Pelicula.Titulo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Pelicula.Anio)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Pelicula.Calificacion)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
